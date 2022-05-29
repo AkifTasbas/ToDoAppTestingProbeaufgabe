@@ -13,52 +13,16 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 public class TestRunner {
 
-  AppiumDriver<MobileElement> driver;
+    AppiumDriver<MobileElement> driver;
 
-
-
-    @Test
-    public void test1() throws InterruptedException, MalformedURLException {
-
-            DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
-            //we use android phone
-            desiredCapabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, Platform.ANDROID);
-            //version of android
-            desiredCapabilities.setCapability(MobileCapabilityType.VERSION, "8.0");
-            //name of the device, if it is real device we need to pass UUID parameter
-            desiredCapabilities.setCapability(MobileCapabilityType.DEVICE_NAME, "ToDoApp");
-
-            //either you specify app--> //path/to/app.apk
-            //or if app is already installed, you need to specify appActivity and appPackage
-            //this info you can find in the internet, at work - ask to developers
-
-            // Set your application's package name.
-            desiredCapabilities.setCapability("appPackage", "com.example.yeshasprabhakar.todo");
-
-            // Set your application's MainActivity i.e. the LAUNCHER activity name.
-            desiredCapabilities.setCapability("appActivity", "com.example.yeshasprabhakar.todo.MainActivity");
-            desiredCapabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, "UiAutomator2");
-
-
-        /*"http://localhost:4723/wd/hub" --> address of the appium server. If you have appium server on the same computer
-        just use local host
-        4723-->default port number
-        //we need to provide 2 parameters: URL of appium servers and desired capabilities
-
-        */
-        driver = new AppiumDriver<>(new URL("http://localhost:4723/wd/hub"), desiredCapabilities);
-
-
-
-            //---------------------------------------TEST1 Hinzufügen einer Aufgabe ------------------------------------------------------------
-        //Plus Button klicken      //BUrada lets add new task acilip aclimadigina bakmak lazim saniyorum.
+//---------------------------------------TEST1 Hinzufügen einer Aufgabe ------------------------------------------------------------
+    //Plus Button klicken      //Add here control of "Lets add mew Task!" Dialog is oppened or not!!!!!!!!
 
         /*  TEST1 Hinzufügen einer Aufgabe
       Schritt   Aktion                          Erwartetes Ergebnis
@@ -67,6 +31,48 @@ public class TestRunner {
       3         done klicken                    Neuer Task "Test" wurde erstellt und ist in der Liste sichtbar
 
          */
+
+    @Test
+    public void test1() throws InterruptedException {
+
+        DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
+        //we use android phone
+        desiredCapabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, Platform.ANDROID);
+        //version of android
+        desiredCapabilities.setCapability(MobileCapabilityType.VERSION, "8.0");
+        //name of the device, if it is real device , need to pass UUID parameter
+        desiredCapabilities.setCapability(MobileCapabilityType.DEVICE_NAME, "ToDoApp");
+        desiredCapabilities.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 20000);
+        //either you specify app--> //path/to/app.apk
+        //or if app is already installed, you need to specify appActivity and appPackage
+        //this info you can find in the internet or with help of Apk Info app, at work - should ask to developers
+
+        // Set your application's package name.
+        desiredCapabilities.setCapability("appPackage", "com.example.yeshasprabhakar.todo");
+
+        // Set your application's MainActivity i.e. the LAUNCHER activity name.
+        desiredCapabilities.setCapability("appActivity", "com.example.yeshasprabhakar.todo.MainActivity");
+        desiredCapabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, "UiAutomator2");
+
+
+        /*"http://localhost:4723/wd/hub" --> address of the appium server. If I have appium server on the same computer
+        just use local host
+        4723-->default port number
+        //we need to provide 2 parameters: URL of appium servers and desired capabilities
+
+        */
+        System.out.println("---------------------------The problem is Here!!!!!!!!-----------------");
+        System.out.println("----------------------Control 1-------------------------------");
+        try {
+            driver = new AppiumDriver<>(new URL("http://localhost:49151/wd/hub"), desiredCapabilities);
+        } catch (Exception e) {
+            System.out.println("------------------Control 2-----------------------------");
+            e.printStackTrace();
+        }
+        System.out.println("-----------------------Control 3-----------------------------------");
+        Thread.sleep(3000);
+
+
 
         MobileElement plusButton = driver.findElement(By.id("com.example.yeshasprabhakar.todo:id/fab"));
         plusButton.click();
@@ -78,26 +84,33 @@ public class TestRunner {
         doneButton.click();
         //Neuer Task "Test" wurde erstellt und ist in der Liste sichtbar
 
-        //Bunu diyanamik nasil yapabiliriz bizim yazdigimiz Test ifadesini kasdediyorum bunun yazili olup olmadigini.
-        //Mesala get Text yardimiyla
+        //I should make this method dynamic!!!!!!!!!!!!!!
         MobileElement taskTitle = driver.findElement(By.xpath("//*[@text='Test']"));
         Assert.assertTrue(taskTitle.isDisplayed());
+
+        //close the app at the end
+        driver.closeApp();
     }
-//------------------------------------------TEST 2 Hinzufügen einer Aufgabe abbrechen-----------------------------------------------------------------------
+//-------------------------------------------------TEST 2 Hinzufügen einer Aufgabe abbrechen----------------------------
 
     @Test
     public void test2() throws MalformedURLException, InterruptedException {
-        DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
-        desiredCapabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, Platform.ANDROID);
-        desiredCapabilities.setCapability(MobileCapabilityType.VERSION, "8.0");
-        desiredCapabilities.setCapability(MobileCapabilityType.DEVICE_NAME, "ToDoApp");
-        desiredCapabilities.setCapability("appPackage", "com.example.yeshasprabhakar.todo");
-        desiredCapabilities.setCapability("appActivity", "com.example.yeshasprabhakar.todo.MainActivity");
-        desiredCapabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, "UiAutomator2");
+        try {
+            DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
+            desiredCapabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, Platform.ANDROID);
+            desiredCapabilities.setCapability(MobileCapabilityType.VERSION, "8.0");
+            desiredCapabilities.setCapability(MobileCapabilityType.DEVICE_NAME, "ToDoApp");
+            desiredCapabilities.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 20000);
+            desiredCapabilities.setCapability("appPackage", "com.example.yeshasprabhakar.todo");
+            desiredCapabilities.setCapability("appActivity", "com.example.yeshasprabhakar.todo.MainActivity");
+            desiredCapabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, "UiAutomator2");
+            Thread.sleep(3000);
 
-        driver = new AppiumDriver<>(new URL("http://localhost:4723/wd/hub"), desiredCapabilities);
+            driver = new AppiumDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), desiredCapabilities);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
 
-        Thread.sleep(3000);
 
       /*  2. Hinzufügen einer Aufgabe abbrechen
         Schritt   Aktion                          Erwartetes Ergebnis
@@ -129,13 +142,16 @@ public class TestRunner {
         System.out.println("textOfFirstPage = " + textOfFirstPage);
         Assert.assertTrue(textOfFirstPage.contains("What do you want to do today?"));
 
+        //close the app at the end
+        driver.closeApp();
 
     }
 
-//----------------------------------------------------Test3 Hinzufügen einer Aufgabe ohne Titel------------------------------------------
+//-------------------------------------------------Test3 Hinzufügen einer Aufgabe ohne Titel----------------------------
 
 
-     /*  3. Hinzufügen einer Aufgabe ohne Titel
+     /*
+     3. Hinzufügen einer Aufgabe ohne Titel
         Schritt   Aktion                          Erwartetes Ergebnis
         1         Plus Button klicken            "Lets add mew Task!" Dialog öffnet sich
         2         done klicken                   Fehlermeldung "Oops, Cannot set an empty text" erscheint
@@ -163,18 +179,22 @@ public class TestRunner {
         //done klicken
         MobileElement doneButton = driver.findElement(By.id("android:id/button1"));
         doneButton.click();
-        //  Fehlermeldung "Oops, Cannot set an empty text" erscheint Bunu bulamiyorum??????  BURASI BITMEDI
+        //  Fehlermeldung "Oops, Cannot set an empty text" erscheint
+        //I should find out how i can handle with toastMsg(toast messages) !!!!!!!!!!!!!!!!!!!!!
+
         WebDriverWait wait = new WebDriverWait(driver, 30);
         wait.until(ExpectedConditions.alertIsPresent());
         Alert alert = driver.switchTo().alert();
         String textOfAlert = alert.getText();
         System.out.println("textOfAlert = " + textOfAlert);
 
-
+        //close the app at the end
+        driver.closeApp();
     }
-    //---------------------------------------------TEST4 Hinzugefügte Aufgabe löschen------------------------------------
+    //---------------------------------------------TEST4 Hinzugefügte Aufgabe löschen-----------------------------------
 
-    /*  TEST4 Hinzugefügte Aufgabe löschen
+    /*
+    TEST4 Hinzugefügte Aufgabe löschen
       Schritt   Aktion                          Erwartetes Ergebnis
       1         Plus Button klicken            "Lets add mew Task!" Dialog öffnet sich
       2         "Test" in Textfeld schreiben
@@ -204,9 +224,7 @@ public class TestRunner {
         MobileElement doneButton = driver.findElement(By.id("android:id/button1"));
         doneButton.click();
         //Neuer Task "Test" wurde erstellt und ist in der Liste sichtbar
-
-        //Bunu diyanamik nasil yapabiliriz bizim yazdigimiz Test ifadesini kasdediyorum bunun yazili olup olmadigini.
-        //Mesala get Text yardimiyla
+        //I should make this method dynamic!!!!!!!!!!!!!!
         MobileElement taskTitle = driver.findElement(By.xpath("//*[@text='Test']"));
         Assert.assertTrue(taskTitle.isDisplayed());
 
@@ -215,14 +233,16 @@ public class TestRunner {
         MobileElement mülltonnenIcon = driver.findElement(By.id("com.example.yeshasprabhakar.todo:id/delete"));
         mülltonnenIcon.click();
 
-
+        //close the app at the end
+        driver.closeApp();
     }
-//----------------------------------------------TEST5 5. Tag-/Nachtmodus wechseln----------------------------------
+//----------------------------------------------TEST5 Tag-/Nachtmodus wechseln------------------------------------------
 
-    /*  TEST5  Tag-/Nachtmodus wechseln
+    /*
+    TEST5  Tag-/Nachtmodus wechseln
        Schritt   Aktion                          Erwartetes Ergebnis
-       1         Sonne/Mond Icon clicken         Hintergrund ist dunken
-       2         Sonne/Mond Icon clicken         Hintergrund ist hell
+       1         Sonne/Mond Icon klicken         Hintergrund ist dunken
+       2         Sonne/Mond Icon klicken         Hintergrund ist hell
 
        */
     @Test
@@ -238,15 +258,18 @@ public class TestRunner {
         driver = new AppiumDriver<>(new URL("http://localhost:4723/wd/hub"), desiredCapabilities);
 
         Thread.sleep(3000);
-        // 1         Sonne/Mond Icon clicken         Hintergrund ist dunken
+        // 1         Sonne/Mond Icon klicken         Hintergrund ist dunken
+        //I should check the background chanced or not!!!!!!!!!!!!!!!!!!!
         MobileElement sonneMondIcon = driver.findElement(By.id("com.example.yeshasprabhakar.todo:id/themeActionButton"));
         sonneMondIcon.click();
 
         Thread.sleep(5000);
-
-        //2         Sonne/Mond Icon clicken         Hintergrund ist hell
+        //I should check the background chanced or not!!!!!!!!!!!!!!!!!!!
+        //2         Sonne/Mond Icon klicken         Hintergrund ist hell
         MobileElement sonneIcon = driver.findElement(By.id("com.example.yeshasprabhakar.todo:id/themeActionButton"));
         sonneIcon.click();
+        //close the app at the end
+        driver.closeApp();
     }
 
 

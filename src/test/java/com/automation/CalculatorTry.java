@@ -24,12 +24,12 @@ public class CalculatorTry {
         desiredCapabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, Platform.ANDROID);
         //version of android
         desiredCapabilities.setCapability(MobileCapabilityType.VERSION, "8.0");
-        //name of the device, if it is real device we need to pass UUID parameter
+        //name of the device, if it is real device need to pass UUID parameter
         desiredCapabilities.setCapability(MobileCapabilityType.DEVICE_NAME, "ToDoApp");
 
         //either you specify app--> //path/to/app.apk
         //or if app is already installed, you need to specify appActivity and appPackage
-        //this info you can find in the internet, at work - ask to developers
+        //this info you can find in the internet or with help of Apk Info app, at work - should ask to developers
 
         // Set your application's package name.
         desiredCapabilities.setCapability("appPackage", "com.android.calculator2");
@@ -101,7 +101,7 @@ public class CalculatorTry {
 
 
     }
-    //CREATE A METHOD NAMED getDigit THAT IS RETURNING MOBILE ELEMENT OF THE DIGIT THAT YOU PASS AS A PARAMETER
+//METHOD NAMED getDigit THAT IS RETURNING MOBILE ELEMENT OF THE DIGIT THAT YOU PASS AS A PARAMETER
 
     public MobileElement getDigit(int digit){
         return driver.findElement(By.id("com.android.calculator2:id/digit_"+digit));
